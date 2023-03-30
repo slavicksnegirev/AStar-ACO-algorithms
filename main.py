@@ -1,28 +1,7 @@
-import os
-import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-from graph import Graph
-from queue import PriorityQueue
 
 G = nx.MultiDiGraph()
-
-
-# G.add_nodes_from([
-#     ("A", {"heuristics": 9}),
-#     ("B", {"heuristics": 6}),
-#     ("C", {"heuristics": 5}),
-#     ("D", {"heuristics": 7}),
-#     ("E", {"heuristics": 8}),
-# ])
-#
-# G.add_edges_from([
-#     ("A", "C", {"weight": 10}),
-#     ("B", "C", {"weight": 15}),
-#     ("B", "D", {"weight": 16}),
-#     ("C", "D", {"weight": 18}),
-#     ("D", "E", {"weight": 7}),
-# ])
 
 G.add_nodes_from([
     ("1", {"heuristics": 15}),
@@ -75,15 +54,6 @@ G.add_edges_from([
     ("14", "15", {"weight": 6}),
 ])
 
-# vertex = len(G)
-# tmp_graph = Graph(vertex)
-# tmp_array = []
-# for i in range(vertex):
-#         for j in range(vertex):
-#
-# tmp_graph.graph = [
-#
-# ]
 
 def draw_graph():
     pos = nx.shell_layout(G)
@@ -100,6 +70,49 @@ def draw_graph():
     #     pos[i] += 0.005
     # nx.draw_networkx_labels(G, pos, labels=node_labels, font_color="maroon", font_size=20)
     plt.show()
+
+
+def a_star(start, goal):
+    h = {n: (d["heuristics"]) for n, d in G.nodes(data=True)}
+    d = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)}
+
+    Q = list()  # множество вершин, которые требуется рассмотреть
+    U = list()  # множество рассмотренных вершин
+    f = h       # значение эвристической функции "расстояние + стоимость" для вершины x
+    g = h       # стоимость пути от начальной вершины до x
+
+    for k, v in g.items():
+        f[k] = 0
+        g[k] = 0
+
+    Q.append(str(start))
+    g[str(start)] = 0
+    f[str(start)] = g[str(start)] + h[str(start)]
+
+    while len(Q) != 0:
+        current = -1
+        tmp_min = 9999
+
+        for i in range(len(Q)):
+            if f[Q[i]] < tmp_min:
+                current = Q[i]
+                tmp_min = f[Q[i]]
+
+        if current == str(goal):
+            U.append(current)
+            print("Путь найден: " + str(U))
+            return
+        Q.remove(current)
+        U.append(current)
+        for v in list(G.neighbors(current)):
+            tentative_score = g[current] + d[current, v]
+            if (v in U) and tentative_score >= g[v]:
+                continue
+            else:
+                g[v] = tentative_score
+                f[v] = g[v] + h[v]
+                if v not in Q:
+                    Q.append(v)
 
 
 def case_number_1():
@@ -121,7 +134,12 @@ def case_number_2():
 
 
 def case_number_3():
-    pass
+    print("Введите название начальной вершины: ")
+    name_of_start_vertex = input()
+    print("Введите название целевой вершины: ")
+    name_of_goal_vertex = input()
+    a_star(name_of_start_vertex, name_of_goal_vertex)
+
 
 def menu(case_number):
     if case_number == '1':

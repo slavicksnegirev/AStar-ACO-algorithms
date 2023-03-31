@@ -73,14 +73,16 @@ def draw_graph():
 
 
 def a_star(start, goal):
-    h = {n: (d["heuristics"]) for n, d in G.nodes(data=True)}
-    d = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)}
+    h = {n: (d["heuristics"]) for n, d in G.nodes(data=True)} # cловарь эвристики; ключ - название вершины
+    d = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)} # словарь весов; ключ - название двух вершин
+
 
     Q = list()  # множество вершин, которые требуется рассмотреть
     U = list()  # множество рассмотренных вершин
     f = h       # значение эвристической функции "расстояние + стоимость" для вершины x
     g = h       # стоимость пути от начальной вершины до x
 
+    # обнуляю значения в словарях
     for k, v in g.items():
         f[k] = 0
         g[k] = 0
@@ -93,6 +95,7 @@ def a_star(start, goal):
         current = -1
         tmp_min = 9999
 
+        # ищем среди Q вершину с минимальным значением f
         for i in range(len(Q)):
             if f[Q[i]] < tmp_min:
                 current = Q[i]
@@ -100,8 +103,7 @@ def a_star(start, goal):
 
         if current == str(goal):
             U.append(current)
-            print("Путь найден: " + str(U))
-            return
+            break
         Q.remove(current)
         U.append(current)
         for v in list(G.neighbors(current)):
@@ -113,6 +115,27 @@ def a_star(start, goal):
                 f[v] = g[v] + h[v]
                 if v not in Q:
                     Q.append(v)
+
+    '''поиск кратчайшего пути'''
+    trace_node = goal
+    optimal_sequence = [goal]
+    for i in range(len(U) - 2, -1, -1):
+        check_node = U[i][0]  # current node
+        if trace_node in [children[0] for children in G[check_node]]:
+            children_costs = children_nodes = []
+            for u, v, d in G.edges(data=True):
+                if u == check_node:
+                    children_costs.append(d)
+                    children_nodes.append(v)
+
+
+            # if g[check_node] + int(children_costs[children_nodes.index(trace_node)]) == g[trace_node]:
+            optimal_sequence.append(check_node)
+            trace_node = check_node
+    optimal_sequence.reverse()  # reverse the optimal sequence
+
+    print("Множество рассмотренных вершин: " + str(U))
+    print("Путь найден: " + str(optimal_sequence))
 
 
 def case_number_1():

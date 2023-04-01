@@ -94,7 +94,6 @@ def a_star(start, goal):
     while len(Q) > 0:
         current = None
 
-        # node with lowest f() is found
         for v in Q:
             if (current == None) or (g[v] + h[v] < g[current] + h[current]):
                 current = v
@@ -103,35 +102,23 @@ def a_star(start, goal):
             pass
         else:
             for v in list(G.neighbors(current)):
-                # nodes 'm' not in first and last set are added to first
-                # n is set its parent
                 if v not in Q and v not in U:
                     Q.append(v)
                     parents[v] = current
                     g[v] = g[current] + d[current, v]
-
-
-                # for each node m,compare its distance from start i.e g(m) to the
-                # start through n node
-
                 else:
                     if g[v] > g[current] + d[current, v]:
-                        # update g(m)
                         g[v] = g[current] + d[current, v]
-                        # change parent of m to n
                         parents[v] = current
 
-                        # if m in closed set,remove and add to open
                         if v in U:
                             U.remove(v)
                             Q.append(v)
 
         if current == None:
-            print('Path does not exist!')
+            print('Путь не существует.')
             return None
 
-        # if the current node is the stop_node
-        # then we begin reconstructin the path from it to the start_node
         if current == goal:
             path = []
 
@@ -142,41 +129,11 @@ def a_star(start, goal):
             path.append(start)
             path.reverse()
 
-            print('Path found: {}'.format(path))
+            print('Путь найден: {}'.format(path))
             return path
 
-        # remove n from the open_list, and add it to closed_list
-        # because all of his neighbors were inspected
         Q.remove(current)
         U.append(current)
-
-
-
-
-
-
-        # for i in range(len(Q)):
-        #     if f[Q[i]] < tmp_min:
-        #         current = Q[i]
-        #         tmp_min = f[Q[i]]
-        #
-        # if current == str(goal):
-        #     U.append(current)
-        #     break
-        # Q.remove(current)
-        # U.append(current)
-        # for v in list(G.neighbors(current)):
-        #     tentative_score = g[current] + d[current, v]
-        #     if (v in U) and tentative_score >= g[v]:
-        #         continue
-        #     else:
-        #         g[v] = tentative_score
-        #         f[v] = g[v] + h[v]
-        #         if v not in Q:
-        #             Q.append(v)
-
-
-
 
 def case_number_1():
     print("Введите название вершины, которую хотите добавить: ")

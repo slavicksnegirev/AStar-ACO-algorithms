@@ -1,6 +1,8 @@
+import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
+path = []
 G = nx.MultiDiGraph()
 
 G.add_nodes_from([
@@ -55,13 +57,43 @@ G.add_edges_from([
 ])
 
 
+def draw_path():
+    tmp_paar_path = []
+    for i in range(len(path) - 1):
+        tmp_paar_path.append(path[i])
+        tmp_paar_path.append(path[i + 1])
+    tmp_paar_path = np.array(tmp_paar_path).reshape(-1, 2)
+
+    tmp_edge_array = []
+    for u, v, d in G.edges:
+        tmp_edge_array.append(u)
+        tmp_edge_array.append(v)
+    tmp_edge_array = np.array(tmp_edge_array).reshape(-1, 2)
+
+    if len(path) > 0:
+        edge_colors = []
+        for u1, v1 in tmp_edge_array:
+            flag = 0
+            for u2, v2 in tmp_paar_path:
+                if u1 == u2 and v1 == v2:
+                    flag = 1
+                else:
+                    pass
+            edge_colors.append(flag)
+        return np.array(edge_colors)
+    else:
+        return np.full(len(G.edges), 0)
+
+
 def draw_graph():
     pos = nx.shell_layout(G)
 
     node_labels = {n: (d["heuristics"]) for n, d in G.nodes(data=True)}
     edge_labels = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)}
 
-    nx.draw(G, pos, with_labels=True, node_size=200, node_color="pink", font_size=10, width=1, edge_color="grey")
+    edge_colors = draw_path()
+
+    nx.draw(G, pos, with_labels=True, node_size=200, node_color="pink", font_size=10, width=1, edge_color=edge_colors)
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="maroon", font_size=6)
     # for i in pos:
     #     pos[i] -= 0.002
@@ -120,7 +152,7 @@ def a_star(start, goal):
             return None
 
         if current == goal:
-            path = []
+            path.clear()
 
             while parents[current] != current:
                 path.append(current)

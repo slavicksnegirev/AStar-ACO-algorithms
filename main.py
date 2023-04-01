@@ -101,6 +101,7 @@ def draw_graph():
     # for i in pos:
     #     pos[i] += 0.005
     # nx.draw_networkx_labels(G, pos, labels=node_labels, font_color="maroon", font_size=20)
+    # plt.legend(path)
     plt.show()
 
 
@@ -193,6 +194,10 @@ def case_number_3():
     a_star(name_of_start_vertex, name_of_goal_vertex)
 
 
+def case_number_4():
+    print("=)")
+
+
 def menu(case_number):
     if case_number == '1':
         case_number_1()
@@ -202,6 +207,9 @@ def menu(case_number):
 
     elif case_number == '3':
         case_number_3()
+
+    elif case_number == '4':
+        case_number_4()
 
     else:
         print("Неверный ввод")
@@ -217,7 +225,8 @@ def main():
               f"+-----------------------------------+\n"
               f"|1.| Добавить вершину.              |")
         print(f"|2.| Добавить путь.                 |")
-        print(f"|3.| Алгоритм А*                    |\n"
+        print(f"|3.| Алгоритм А*                    |")
+        print(f"|4.| Муравьиный алгоритм.           |\n"
               f"+-----------------------------------+")
         print("Введите номер меню: ")
         number = input()

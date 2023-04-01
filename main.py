@@ -4,20 +4,20 @@ import matplotlib.pyplot as plt
 G = nx.MultiDiGraph()
 
 G.add_nodes_from([
-    ("1", {"heuristics": 15}),
-    ("2", {"heuristics": 13}),
-    ("3", {"heuristics": 11}),
-    ("4", {"heuristics": 10}),
-    ("5", {"heuristics": 8}),
-    ("6", {"heuristics": 9}),
-    ("7", {"heuristics": 6}),
-    ("8", {"heuristics": 5}),
-    ("9", {"heuristics": 5}),
-    ("10", {"heuristics": 6}),
-    ("11", {"heuristics": 3}),
-    ("12", {"heuristics": 4}),
-    ("13", {"heuristics": 1}),
-    ("14", {"heuristics": 2}),
+    ("1", {"heuristics": 0}),
+    ("2", {"heuristics": 0}),
+    ("3", {"heuristics": 0}),
+    ("4", {"heuristics": 0}),
+    ("5", {"heuristics": 0}),
+    ("6", {"heuristics": 0}),
+    ("7", {"heuristics": 0}),
+    ("8", {"heuristics": 0}),
+    ("9", {"heuristics": 0}),
+    ("10", {"heuristics": 0}),
+    ("11", {"heuristics": 0}),
+    ("12", {"heuristics": 0}),
+    ("13", {"heuristics": 0}),
+    ("14", {"heuristics": 0}),
     ("15", {"heuristics": 0}),
 ])
 
@@ -73,14 +73,14 @@ def draw_graph():
 
 
 def a_star(start, goal):
-    h = {n: (d["heuristics"]) for n, d in G.nodes(data=True)} # cловарь эвристики; ключ - название вершины
-    d = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)} # словарь весов; ключ - название двух вершин
-
+    h = {n: (d["heuristics"]) for n, d in G.nodes(data=True)}  # cловарь эвристики; ключ - название вершины
+    d = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)}  # словарь весов; ключ - название двух вершин
 
     Q = list()  # множество вершин, которые требуется рассмотреть
     U = list()  # множество рассмотренных вершин
-    f = h       # значение эвристической функции "расстояние + стоимость" для вершины x
-    g = h       # стоимость пути от начальной вершины до x
+    f = h  # значение эвристической функции "расстояние + стоимость" для вершины x
+    g = h  # стоимость пути от начальной вершины до x
+    parents = {}
 
     # обнуляю значения в словарях
     for k, v in g.items():
@@ -89,53 +89,93 @@ def a_star(start, goal):
 
     Q.append(str(start))
     g[str(start)] = 0
-    f[str(start)] = g[str(start)] + h[str(start)]
+    parents[str(start)] = start
 
-    while len(Q) != 0:
-        current = -1
-        tmp_min = 9999
+    while len(Q) > 0:
+        current = None
 
-        # ищем среди Q вершину с минимальным значением f
-        for i in range(len(Q)):
-            if f[Q[i]] < tmp_min:
-                current = Q[i]
-                tmp_min = f[Q[i]]
+        # node with lowest f() is found
+        for v in Q:
+            if (current == None) or (g[v] + h[v] < g[current] + h[current]):
+                current = v
 
-        if current == str(goal):
-            U.append(current)
-            break
+        if (current == goal) or (G[current] == None):
+            pass
+        else:
+            for v in list(G.neighbors(current)):
+                # nodes 'm' not in first and last set are added to first
+                # n is set its parent
+                if v not in Q and v not in U:
+                    Q.append(v)
+                    parents[v] = current
+                    g[v] = g[current] + d[current, v]
+
+
+                # for each node m,compare its distance from start i.e g(m) to the
+                # start through n node
+
+                else:
+                    if g[v] > g[current] + d[current, v]:
+                        # update g(m)
+                        g[v] = g[current] + d[current, v]
+                        # change parent of m to n
+                        parents[v] = current
+
+                        # if m in closed set,remove and add to open
+                        if v in U:
+                            U.remove(v)
+                            Q.append(v)
+
+        if current == None:
+            print('Path does not exist!')
+            return None
+
+        # if the current node is the stop_node
+        # then we begin reconstructin the path from it to the start_node
+        if current == goal:
+            path = []
+
+            while parents[current] != current:
+                path.append(current)
+                current = parents[current]
+
+            path.append(start)
+            path.reverse()
+
+            print('Path found: {}'.format(path))
+            return path
+
+        # remove n from the open_list, and add it to closed_list
+        # because all of his neighbors were inspected
         Q.remove(current)
         U.append(current)
-        for v in list(G.neighbors(current)):
-            tentative_score = g[current] + d[current, v]
-            if (v in U) and tentative_score >= g[v]:
-                continue
-            else:
-                g[v] = tentative_score
-                f[v] = g[v] + h[v]
-                if v not in Q:
-                    Q.append(v)
-
-    '''поиск кратчайшего пути'''
-    trace_node = goal
-    optimal_sequence = [goal]
-    for i in range(len(U) - 2, -1, -1):
-        check_node = U[i][0]  # current node
-        if trace_node in [children[0] for children in G[check_node]]:
-            children_costs = children_nodes = []
-            for u, v, d in G.edges(data=True):
-                if u == check_node:
-                    children_costs.append(d)
-                    children_nodes.append(v)
 
 
-            # if g[check_node] + int(children_costs[children_nodes.index(trace_node)]) == g[trace_node]:
-            optimal_sequence.append(check_node)
-            trace_node = check_node
-    optimal_sequence.reverse()  # reverse the optimal sequence
 
-    print("Множество рассмотренных вершин: " + str(U))
-    print("Путь найден: " + str(optimal_sequence))
+
+
+
+        # for i in range(len(Q)):
+        #     if f[Q[i]] < tmp_min:
+        #         current = Q[i]
+        #         tmp_min = f[Q[i]]
+        #
+        # if current == str(goal):
+        #     U.append(current)
+        #     break
+        # Q.remove(current)
+        # U.append(current)
+        # for v in list(G.neighbors(current)):
+        #     tentative_score = g[current] + d[current, v]
+        #     if (v in U) and tentative_score >= g[v]:
+        #         continue
+        #     else:
+        #         g[v] = tentative_score
+        #         f[v] = g[v] + h[v]
+        #         if v not in Q:
+        #             Q.append(v)
+
+
 
 
 def case_number_1():

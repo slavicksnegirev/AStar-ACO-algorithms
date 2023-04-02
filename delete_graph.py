@@ -36,6 +36,11 @@ class Ui_delete_graph(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(delete_graph)
+        # self.pushButton.clicked.connect(G.clear)
+
+        self.pushButton.clicked.connect(G.clear)
+        print(G)
+        self.pushButton_2.clicked.connect(delete_graph.close)
         QtCore.QMetaObject.connectSlotsByName(delete_graph)
 
     def retranslateUi(self, delete_graph):
@@ -44,7 +49,16 @@ class Ui_delete_graph(object):
         self.label.setText(_translate("delete_graph", "<html><head/><body><p align=\"center\">Вы точно уверены, что</p><p align=\"center\">хотите удалить весь граф?</p></body></html>"))
         self.pushButton_2.setText(_translate("delete_graph", "Нет"))
         self.pushButton.setText(_translate("delete_graph", "Да"))
-        self.pushButton.clicked.connect(G.clear())
-        # self.pushButton.clicked.connect()
+
+    def button_yes_clicked(self):
+        G.clear()
+        print(G)
+        self.close()
 
 
+def delete_graph_window():
+    global delete_graph
+    delete_graph = QtWidgets.QMessageBox
+    ui = Ui_delete_graph()
+    ui.setupUi(delete_graph)
+    delete_graph.show()

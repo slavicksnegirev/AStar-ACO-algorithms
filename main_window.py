@@ -11,10 +11,10 @@ import sys
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from numpy import random
 
 from graph import *
 from input_vertex import *
+from connecting_vertices import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -46,10 +46,10 @@ class Ui_MainWindow(object):
         self.add_vertex_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.add_vertex_button.setObjectName("pushButton")
         self.verticalLayout_2.addWidget(self.add_vertex_button)
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout_2.addWidget(self.pushButton_2)
+        self.connecting_vertices_button = QtWidgets.QPushButton(self.centralwidget)
+        self.connecting_vertices_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.connecting_vertices_button.setObjectName("pushButton_2")
+        self.verticalLayout_2.addWidget(self.connecting_vertices_button)
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setMaximumSize(QtCore.QSize(200, 16777215))
         self.pushButton_3.setObjectName("pushButton_3")
@@ -119,7 +119,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "ЛР №2 ПЗвИС"))
         self.label_2.setText(_translate("MainWindow", "ПАРАМЕТРЫ ГРАФА"))
         self.add_vertex_button.setText(_translate("MainWindow", "Добавить вершину"))
-        self.pushButton_2.setText(_translate("MainWindow", "Соединить вершины"))
+        self.connecting_vertices_button.setText(_translate("MainWindow", "Соединить вершины"))
         self.pushButton_3.setText(_translate("MainWindow", "Алгоритм A*"))
         self.pushButton_4.setText(_translate("MainWindow", "Муравьиный алгоритм"))
         self.pushButton_5.setText(_translate("MainWindow", "Удалить вершину"))
@@ -127,7 +127,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Вывод протокола:"))
 
         self.add_vertex_button.clicked.connect(input_vertex_dialog)
-
+        self.connecting_vertices_button.clicked.connect(connecting_vertices_dialog)
 
     def plot_canvas(self):
         self.figure.clear()

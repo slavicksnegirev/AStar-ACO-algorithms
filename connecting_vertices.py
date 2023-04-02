@@ -66,8 +66,8 @@ class Ui_connecting_vertices(object):
     def retranslateUi(self, connecting_vertices):
         _translate = QtCore.QCoreApplication.translate
         connecting_vertices.setWindowTitle(_translate("connecting_vertices", "Соединение вершин"))
-        self.label.setText(_translate("connecting_vertices", "Откуда:"))
-        self.label_2.setText(_translate("connecting_vertices", "Куда:"))
+        self.label.setText(_translate("connecting_vertices", "Начальная вершина:"))
+        self.label_2.setText(_translate("connecting_vertices", "Конечная вершина:"))
         self.label_3.setText(_translate("connecting_vertices", "Введите стоимость пути:"))
 
     def show_data(self):

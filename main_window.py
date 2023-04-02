@@ -15,6 +15,7 @@ from matplotlib.figure import Figure
 from graph import *
 from input_vertex import *
 from connecting_vertices import *
+from a_star_algorithm import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -50,10 +51,10 @@ class Ui_MainWindow(object):
         self.connecting_vertices_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.connecting_vertices_button.setObjectName("pushButton_2")
         self.verticalLayout_2.addWidget(self.connecting_vertices_button)
-        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.verticalLayout_2.addWidget(self.pushButton_3)
+        self.a_star_algorithm_button = QtWidgets.QPushButton(self.centralwidget)
+        self.a_star_algorithm_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.a_star_algorithm_button.setObjectName("pushButton_3")
+        self.verticalLayout_2.addWidget(self.a_star_algorithm_button)
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_4.setMaximumSize(QtCore.QSize(200, 16777215))
         self.pushButton_4.setObjectName("pushButton_4")
@@ -74,6 +75,15 @@ class Ui_MainWindow(object):
         self.pushButton_6.setMaximumSize(QtCore.QSize(200, 16777215))
         self.pushButton_6.setObjectName("pushButton_6")
         self.verticalLayout.addWidget(self.pushButton_6)
+        self.line_3 = QtWidgets.QFrame(self.centralwidget)
+        self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_3.setObjectName("line_3")
+        self.verticalLayout.addWidget(self.line_3)
+        self.pushButton_7 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_7.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.verticalLayout.addWidget(self.pushButton_7)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.verticalLayout_3.addLayout(self.verticalLayout)
@@ -93,10 +103,16 @@ class Ui_MainWindow(object):
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_4.setObjectName("line_4")
         self.verticalLayout_4.addWidget(self.line_4)
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.label.setObjectName("label")
-        self.verticalLayout_4.addWidget(self.label)
+
+        self.text_edit = QtWidgets.QTextEdit(self.centralwidget)
+        self.text_edit.setObjectName("text_edit")
+        self.verticalLayout_4.addWidget(self.text_edit)
+
+        # self.label = QtWidgets.QLabel(self.centralwidget)
+        # self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        # self.label.setObjectName("label")
+        # self.verticalLayout_4.addWidget(self.label)
+
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         MainWindow.setCentralWidget(self.centralwidget)
         # self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -108,8 +124,8 @@ class Ui_MainWindow(object):
         # MainWindow.setStatusBar(self.statusbar)
         self.plot_canvas()
         self.retranslateUi(MainWindow)
-        self.timer = self.canvas.new_timer(1000, [(self.plot_canvas, (), {})])
-        self.timer.start()
+        # self.timer = self.canvas.new_timer(1000, [(self.plot_canvas, (), {})])
+        # self.timer.start()
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -120,16 +136,27 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "ПАРАМЕТРЫ ГРАФА"))
         self.add_vertex_button.setText(_translate("MainWindow", "Добавить вершину"))
         self.connecting_vertices_button.setText(_translate("MainWindow", "Соединить вершины"))
-        self.pushButton_3.setText(_translate("MainWindow", "Алгоритм A*"))
+        self.a_star_algorithm_button.setText(_translate("MainWindow", "Алгоритм A*"))
         self.pushButton_4.setText(_translate("MainWindow", "Муравьиный алгоритм"))
         self.pushButton_5.setText(_translate("MainWindow", "Удалить вершину"))
-        self.pushButton_6.setText(_translate("MainWindow", "Удалить граф"))
-        self.label.setText(_translate("MainWindow", "Вывод протокола:"))
+        self.pushButton_6.setText(_translate("MainWindow", "Разъединить вершины"))
+        self.pushButton_7.setText(_translate("MainWindow", "Удалить граф"))
+        self.text_edit.setText(_translate("MainWindow", "Вывод протокола:\n" + str(path)))
 
         self.add_vertex_button.clicked.connect(input_vertex_dialog)
+        self.add_vertex_button.clicked.connect(self.plot_canvas)
         self.connecting_vertices_button.clicked.connect(connecting_vertices_dialog)
+        self.connecting_vertices_button.clicked.connect(self.plot_canvas)
+        self.a_star_algorithm_button.clicked.connect(a_star_algorithm_dialog)
+        self.a_star_algorithm_button.clicked.connect(self.protocol_update)
+        self.a_star_algorithm_button.clicked.connect(self.plot_canvas)
+
 
     def plot_canvas(self):
         self.figure.clear()
         draw_graph()
         self.canvas.draw()
+
+    def protocol_update(self):
+        self.text_edit.clear()
+        self.text_edit.append("Вывод протокола:\n" + str(path))

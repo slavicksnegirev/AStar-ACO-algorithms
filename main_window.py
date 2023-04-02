@@ -12,7 +12,9 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from numpy import random
+
 from graph import *
+from input_vertex import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -40,10 +42,10 @@ class Ui_MainWindow(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.verticalLayout_2.addWidget(self.line)
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout_2.addWidget(self.pushButton)
+        self.add_vertex_button = QtWidgets.QPushButton(self.centralwidget)
+        self.add_vertex_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.add_vertex_button.setObjectName("pushButton")
+        self.verticalLayout_2.addWidget(self.add_vertex_button)
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setMaximumSize(QtCore.QSize(200, 16777215))
         self.pushButton_2.setObjectName("pushButton_2")
@@ -83,14 +85,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.line_3)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        # self.widget = QtWidgets.QWidget(self.centralwidget)
-        # self.widget.setObjectName("widget")
-
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
         self.verticalLayout_4.addWidget(self.canvas)
-        self.plot_canvas()
-
         self.line_4 = QtWidgets.QFrame(self.centralwidget)
         self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
@@ -102,22 +99,26 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.label)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 24))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-
+        # self.menubar = QtWidgets.QMenuBar(MainWindow)
+        # self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 24))
+        # self.menubar.setObjectName("menubar")
+        # MainWindow.setMenuBar(self.menubar)
+        # self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        # self.statusbar.setObjectName("statusbar")
+        # MainWindow.setStatusBar(self.statusbar)
+        self.plot_canvas()
         self.retranslateUi(MainWindow)
+        self.timer = self.canvas.new_timer(1000, [(self.plot_canvas, (), {})])
+        self.timer.start()
+
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "ЛР №2 ПЗвИС"))
         self.label_2.setText(_translate("MainWindow", "ПАРАМЕТРЫ ГРАФА"))
-        self.pushButton.setText(_translate("MainWindow", "Добавить вершину"))
+        self.add_vertex_button.setText(_translate("MainWindow", "Добавить вершину"))
         self.pushButton_2.setText(_translate("MainWindow", "Соединить вершины"))
         self.pushButton_3.setText(_translate("MainWindow", "Алгоритм A*"))
         self.pushButton_4.setText(_translate("MainWindow", "Муравьиный алгоритм"))
@@ -125,12 +126,10 @@ class Ui_MainWindow(object):
         self.pushButton_6.setText(_translate("MainWindow", "Удалить граф"))
         self.label.setText(_translate("MainWindow", "Вывод протокола:"))
 
+        self.add_vertex_button.clicked.connect(input_vertex_dialog)
+
 
     def plot_canvas(self):
         self.figure.clear()
         draw_graph()
         self.canvas.draw()
-
-
-
-

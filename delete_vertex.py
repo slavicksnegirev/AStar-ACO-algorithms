@@ -60,5 +60,5 @@ def delete_vertex_dialog():
     delete_vertex.show()
 
     if delete_vertex.exec():
-        G.remove_node(ui.show_data()[0])
-        print(ui.show_data()[0])
+        G.remove_node(ui.show_data())
+        print(ui.show_data())

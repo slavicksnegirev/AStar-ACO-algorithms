@@ -1,3 +1,4 @@
+import sys
 from main_window import *
 
 app = QtWidgets.QApplication(sys.argv)

@@ -1,26 +1,25 @@
 import numpy as np
 import networkx as nx
-import matplotlib.pyplot as plt
 from numpy import inf
 
 path = []
 G = nx.MultiDiGraph()
 
 G.add_nodes_from([
-    ("1", {"heuristics": 0}),
-    ("2", {"heuristics": 0}),
-    ("3", {"heuristics": 0}),
-    ("4", {"heuristics": 0}),
-    ("5", {"heuristics": 0}),
-    ("6", {"heuristics": 0}),
-    ("7", {"heuristics": 0}),
-    ("8", {"heuristics": 0}),
-    ("9", {"heuristics": 0}),
-    ("10", {"heuristics": 0}),
-    ("11", {"heuristics": 0}),
-    ("12", {"heuristics": 0}),
-    ("13", {"heuristics": 0}),
-    ("14", {"heuristics": 0}),
+    ("1", {"heuristics": 14}),
+    ("2", {"heuristics": 13}),
+    ("3", {"heuristics": 12}),
+    ("4", {"heuristics": 11}),
+    ("5", {"heuristics": 10}),
+    ("6", {"heuristics": 9}),
+    ("7", {"heuristics": 8}),
+    ("8", {"heuristics": 7}),
+    ("9", {"heuristics": 6}),
+    ("10", {"heuristics": 5}),
+    ("11", {"heuristics": 4}),
+    ("12", {"heuristics": 3}),
+    ("13", {"heuristics": 2}),
+    ("14", {"heuristics": 1}),
     ("15", {"heuristics": 0}),
 ])
 
@@ -263,80 +262,3 @@ def aco(start, goal, size):
             path.append(best_route[i])
     else:
         print('Путь не существует.')
-
-
-
-def case_number_1():
-    print("Введите название вершины, которую хотите добавить: ")
-    name_of_node = input()
-    print("Введите значение эвристики для данной вершины: ")
-    heuristics = int(input())
-    G.add_node(name_of_node, heuristics=heuristics)
-
-
-def case_number_2():
-    print("Введите название вершины, из которой выходит путь: ")
-    name_of_out_node = input()
-    print("Введите название вершины, в которую приходит путь: ")
-    name_of_in_node = input()
-    print("Введите стоимость данного пути: ")
-    weight = int(input())
-    G.add_edge(name_of_out_node, name_of_in_node, weight=weight)
-
-
-def case_number_3():
-    print("Введите название начальной вершины: ")
-    name_of_start_vertex = input()
-    print("Введите название целевой вершины: ")
-    name_of_goal_vertex = input()
-    a_star(name_of_start_vertex, name_of_goal_vertex)
-
-
-def case_number_4():
-    print("Введите название начальной вершины: ")
-    name_of_start_vertex = input()
-    print("Введите название целевой вершины: ")
-    name_of_goal_vertex = input()
-    print("Введите размер колонии: ")
-    size_of_colony = input()
-    aco(name_of_start_vertex, name_of_goal_vertex, size_of_colony)
-
-
-def menu(case_number):
-    if case_number == '1':
-        case_number_1()
-
-    elif case_number == '2':
-        case_number_2()
-
-    elif case_number == '3':
-        case_number_3()
-
-    elif case_number == '4':
-        case_number_4()
-
-    else:
-        print("Неверный ввод")
-        return
-    draw_graph()
-
-
-def main():
-    draw_graph()
-    while True:
-        print(f"+-----------------------------------+\n"
-              f"|               М Е Н Ю             |\n"
-              f"+-----------------------------------+\n"
-              f"|1.| Добавить вершину.              |")
-        print(f"|2.| Добавить путь.                 |")
-        print(f"|3.| Алгоритм А*                    |")
-        print(f"|4.| Муравьиный алгоритм.           |\n"
-              f"+-----------------------------------+")
-        print("Введите номер меню: ")
-        number = input()
-        menu(number)
-
-
-
-
-

@@ -64,15 +64,6 @@ class Ui_a_star_algorithm(object):
         return (self.comboBox.currentText(), self.comboBox_2.currentText())
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    a_star_algorithm = QtWidgets.QDialog()
-    ui = Ui_a_star_algorithm()
-    ui.setupUi(a_star_algorithm)
-    a_star_algorithm.show()
-    sys.exit(app.exec_())
-
 def a_star_algorithm_dialog():
     global a_star_algorithm
     a_star_algorithm = QtWidgets.QDialog()

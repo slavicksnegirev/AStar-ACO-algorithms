@@ -171,14 +171,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Вывод протокола:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
+       <widget class="QTextEdit" name="textEdit"/>
       </item>
      </layout>
     </item>

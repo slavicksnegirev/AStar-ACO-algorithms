@@ -67,8 +67,10 @@ def delete_edge_dialog():
     ui.setupUi(delete_edge)
     delete_edge.show()
 
-    if delete_edge.exec() and ui.show_data()[0] != ui.show_data()[1]:
-        G.remove_edge(ui.show_data()[0], ui.show_data()[1])
-
-    else:
-        print("Некорректный ввод.")
+    if delete_edge.exec():
+        try:
+            G.remove_edge(ui.show_data()[0], ui.show_data()[1])
+        except:
+            text_output.append("Некорректный ввод.")
+            return
+        text_output.append("Вершина " + ui.show_data()[0] + " разъединена с вершиной " + ui.show_data()[1] + ".")

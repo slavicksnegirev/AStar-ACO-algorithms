@@ -28,86 +28,114 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
+
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setMaximumSize(QtCore.QSize(200, 16777215))
         self.label_2.setStyleSheet("font: 18pt \".AppleSystemUIFont\";")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_3.addWidget(self.label_2)
+
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.verticalLayout_2.addWidget(self.line)
+
         self.add_vertex_button = QtWidgets.QPushButton(self.centralwidget)
         self.add_vertex_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.add_vertex_button.setObjectName("pushButton")
         self.verticalLayout_2.addWidget(self.add_vertex_button)
+
         self.connecting_vertices_button = QtWidgets.QPushButton(self.centralwidget)
         self.connecting_vertices_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.connecting_vertices_button.setObjectName("pushButton_2")
         self.verticalLayout_2.addWidget(self.connecting_vertices_button)
+
         self.a_star_algorithm_button = QtWidgets.QPushButton(self.centralwidget)
         self.a_star_algorithm_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.a_star_algorithm_button.setObjectName("pushButton_3")
         self.verticalLayout_2.addWidget(self.a_star_algorithm_button)
+
         self.aco_algorithm_button = QtWidgets.QPushButton(self.centralwidget)
         self.aco_algorithm_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.aco_algorithm_button.setObjectName("pushButton_4")
         self.verticalLayout_2.addWidget(self.aco_algorithm_button)
+
+        self.heuristics_output_button = QtWidgets.QPushButton(self.centralwidget)
+        self.heuristics_output_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.heuristics_output_button.setObjectName("pushButton_8")
+        self.verticalLayout_2.addWidget(self.heuristics_output_button)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
+
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
+
         self.line_2 = QtWidgets.QFrame(self.centralwidget)
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_2.setObjectName("line_2")
         self.verticalLayout.addWidget(self.line_2)
+
         self.delete_vertex_button = QtWidgets.QPushButton(self.centralwidget)
         self.delete_vertex_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.delete_vertex_button.setObjectName("pushButton_5")
         self.verticalLayout.addWidget(self.delete_vertex_button)
+
         self.delete_edge_button = QtWidgets.QPushButton(self.centralwidget)
         self.delete_edge_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.delete_edge_button.setObjectName("pushButton_6")
         self.verticalLayout.addWidget(self.delete_edge_button)
+
         self.line_3 = QtWidgets.QFrame(self.centralwidget)
         self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
         self.verticalLayout.addWidget(self.line_3)
+
         self.delete_graph_button = QtWidgets.QPushButton(self.centralwidget)
         self.delete_graph_button.setMaximumSize(QtCore.QSize(200, 16777215))
         self.delete_graph_button.setObjectName("pushButton_7")
         self.verticalLayout.addWidget(self.delete_graph_button)
+
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
+
         self.verticalLayout_3.addLayout(self.verticalLayout)
         self.horizontalLayout.addLayout(self.verticalLayout_3)
+
         self.line_3 = QtWidgets.QFrame(self.centralwidget)
         self.line_3.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
         self.horizontalLayout.addWidget(self.line_3)
+
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
+
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
         self.verticalLayout_4.addWidget(self.canvas)
+
         self.line_4 = QtWidgets.QFrame(self.centralwidget)
         self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_4.setObjectName("line_4")
         self.verticalLayout_4.addWidget(self.line_4)
+
         self.text_edit = QtWidgets.QTextEdit(self.centralwidget)
         self.text_edit.setObjectName("text_edit")
         self.verticalLayout_4.addWidget(self.text_edit)
+
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -124,27 +152,38 @@ class Ui_MainWindow(object):
         self.connecting_vertices_button.setText(_translate("MainWindow", "Соединить вершины"))
         self.a_star_algorithm_button.setText(_translate("MainWindow", "Алгоритм A*"))
         self.aco_algorithm_button.setText(_translate("MainWindow", "Муравьиный алгоритм"))
+        self.heuristics_output_button.setText(_translate("MainWindow", "Вывод эвристики"))
         self.delete_vertex_button.setText(_translate("MainWindow", "Удалить вершину"))
         self.delete_edge_button.setText(_translate("MainWindow", "Разъединить вершины"))
         self.delete_graph_button.setText(_translate("MainWindow", "Удалить граф"))
-        self.text_edit.setText(_translate("MainWindow", "Вывод протокола:\n" + str(path)))
+        self.text_edit.setText(_translate("MainWindow", "Программа запущена.\nПо умолчанию строится граф G:\n" + str(G)))
 
         self.add_vertex_button.clicked.connect(input_vertex_dialog)
-        self.add_vertex_button.clicked.connect(self.plot_canvas)
         self.connecting_vertices_button.clicked.connect(connecting_vertices_dialog)
-        self.connecting_vertices_button.clicked.connect(self.plot_canvas)
         self.a_star_algorithm_button.clicked.connect(a_star_algorithm_dialog)
-        self.a_star_algorithm_button.clicked.connect(self.protocol_update)
-        self.a_star_algorithm_button.clicked.connect(self.plot_canvas)
         self.aco_algorithm_button.clicked.connect(aco_algorithm_dialog)
-        self.aco_algorithm_button.clicked.connect(self.protocol_update)
-        self.aco_algorithm_button.clicked.connect(self.plot_canvas)
         self.delete_vertex_button.clicked.connect(delete_vertex_dialog)
-        self.delete_vertex_button.clicked.connect(self.plot_canvas)
         self.delete_edge_button.clicked.connect(delete_edge_dialog)
-        self.delete_edge_button.clicked.connect(self.plot_canvas)
+
+        self.heuristics_output_button.clicked.connect(self.event_heuristics_output_button)
         self.delete_graph_button.clicked.connect(self.event_delete_graph_button)
+
+        self.add_vertex_button.clicked.connect(self.plot_canvas)
+        self.connecting_vertices_button.clicked.connect(self.plot_canvas)
+        self.a_star_algorithm_button.clicked.connect(self.plot_canvas)
+        self.aco_algorithm_button.clicked.connect(self.plot_canvas)
+        self.delete_vertex_button.clicked.connect(self.plot_canvas)
+        self.delete_edge_button.clicked.connect(self.plot_canvas)
         self.delete_graph_button.clicked.connect(self.plot_canvas)
+
+        self.add_vertex_button.clicked.connect(self.protocol_update)
+        self.connecting_vertices_button.clicked.connect(self.protocol_update)
+        self.a_star_algorithm_button.clicked.connect(self.protocol_update)
+        self.aco_algorithm_button.clicked.connect(self.protocol_update)
+        self.heuristics_output_button.clicked.connect(self.protocol_update)
+        self.delete_vertex_button.clicked.connect(self.protocol_update)
+        self.delete_edge_button.clicked.connect(self.protocol_update)
+        self.delete_graph_button.clicked.connect(self.protocol_update)
 
 
     def plot_canvas(self):
@@ -152,21 +191,24 @@ class Ui_MainWindow(object):
         draw_graph()
         self.canvas.draw()
 
-
     def protocol_update(self):
         self.text_edit.clear()
-        self.text_edit.append("Вывод протокола:\n" + str("".join(text_output)))
+        self.text_edit.append(str("".join(text_output)))
         text_output.clear()
+
+
+    def event_heuristics_output_button(self):
+        for item in G.nodes(data=True):
+            text_output.append(str(item) + "\n")
 
     def event_delete_graph_button(self):
         dialog = QMessageBox.question(MainWindow, 'Удаление графа', 'Вы точно хотите удалить граф?')
-        print(dialog)
         if dialog == QMessageBox.Yes:
             G.clear()
+            text_output.append("Граф удалён.")
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

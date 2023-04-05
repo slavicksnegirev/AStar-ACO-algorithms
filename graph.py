@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import networkx as nx
 from numpy import inf
+from matplotlib import pyplot as plt
 
 path = []
 text_output = []
@@ -100,17 +101,27 @@ def draw_graph():
     nx.draw(G, pos, with_labels=True, node_size=200, node_color="pink", font_size=10, width=1, edge_color=edge_colors)
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="maroon", font_size=6)
     # for i in pos:
-    #     pos[i] -= 0.002
-    # nx.draw_networkx_labels(G, pos, font_color="green", font_size=20)
+    #     a = np.array(pos.get(i))
+    #     # a[0] -= 0.01
+    #     a[1] += 0.02
+    #     pos[i] = a
+    # print(pos)
+    # nx.draw_networkx_labels(G, pos, font_color="green", font_size=8)
     # for i in pos:
     #     pos[i] += 0.005
-    # nx.draw_networkx_labels(G, pos, labels=node_labels, font_color="maroon", font_size=20)
-    # plt.legend(path)
+    # for i in pos:
+    #     a = np.array(pos.get(i))
+    #     # a[0] += 0.04
+    #     a[1] -= 0.05
+    #     pos[i] = a
+    # nx.draw_networkx_labels(G, pos, labels=node_labels, font_color="blue", font_size=6)
+    # plt.legend(G.nodes(data=True), bbox_to_anchor =(0.75, 1.15), ncol = 2)
     # plt.show()
 
 
 def a_star(start, goal):
     iteration = 0
+    text_output.append("Вывод протокола:\n")
 
     h = {n: (d["heuristics"]) for n, d in G.nodes(data=True)}  # cловарь эвристики; ключ - название вершины
     d = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)}  # словарь весов; ключ - название двух вершин
@@ -156,8 +167,8 @@ def a_star(start, goal):
                             Q.append(v)
 
         if current == None:
-            text_output.append('Путь не существует.'  + "\n")
-            print('Путь не существует.')
+            text_output.append('Путь не существует.' + "\n")
+            # print('Путь не существует.')
             return None
 
         if current == goal:
@@ -180,7 +191,6 @@ def a_star(start, goal):
 
             text_output.append("Стоимость пути: " + str(cost)  + "\n")
             # print("Стоимость пути: " + str(cost))
-            print("".join(text_output))
             return text_output
 
         Q.remove(current)
@@ -194,10 +204,11 @@ def a_star(start, goal):
         # print("Множество рассмотренных вершин: " + str(U) + "\n")
 
     text_output.append('Путь не существует.\n')
-    print('Путь не существует.')
+    # print('Путь не существует.')
 
 
 def aco(start, goal, size):
+    text_output.append("Вывод протокола:\n")
     d = np.array(nx.adjacency_matrix(G).todense())
 
     start = int(start)

@@ -60,5 +60,8 @@ def delete_vertex_dialog():
     delete_vertex.show()
 
     if delete_vertex.exec():
-        G.remove_node(ui.show_data())
-        print(ui.show_data())
+        try:
+            G.remove_node(ui.show_data())
+            text_output.append("Вершина " + ui.show_data() + " удалена.")
+        except:
+            text_output.append("Неккоректный ввод.")

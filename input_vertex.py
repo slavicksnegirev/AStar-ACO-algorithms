@@ -52,7 +52,6 @@ class Ui_input_vertex(object):
         self.buttonBox.rejected.connect(input_vertex.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(input_vertex)
 
-
     def retranslateUi(self, input_vertex):
         _translate = QtCore.QCoreApplication.translate
         input_vertex.setWindowTitle(_translate("input_vertex", "Добавление вершины"))
@@ -72,7 +71,10 @@ def input_vertex_dialog():
 
     if input_vertex.exec():
         if ui.show_text()[0] not in G.nodes:
-            G.add_node(ui.show_text()[0], heuristics=ui.show_text()[1])
+            if ui.show_text()[1].isdigit():
+                G.add_node(ui.show_text()[0], heuristics=ui.show_text()[1])
+                text_output.append("Вершина " + ui.show_text()[0] + " добавлена.\nЗначение эвристики: " + str(ui.show_text()[1]) + ".")
+            else:
+                text_output.append("Неккоректный ввод значения эвристики.")
         else:
-            print("Такая вершина уже существует.")
-        # return ui.show_text()
+            text_output.append("Такая вершина уже существует.")

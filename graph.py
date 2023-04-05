@@ -1,8 +1,10 @@
+import sys
 import numpy as np
 import networkx as nx
 from numpy import inf
 
 path = []
+text_output = []
 G = nx.MultiDiGraph()
 
 G.add_nodes_from([
@@ -108,6 +110,8 @@ def draw_graph():
 
 
 def a_star(start, goal):
+    iteration = 0
+
     h = {n: (d["heuristics"]) for n, d in G.nodes(data=True)}  # cловарь эвристики; ключ - название вершины
     d = {(u, v): (d["weight"]) for u, v, d in G.edges(data=True)}  # словарь весов; ключ - название двух вершин
 
@@ -127,6 +131,7 @@ def a_star(start, goal):
     parents[str(start)] = start
 
     while len(Q) > 0:
+        iteration += 1
         current = None
 
         for v in Q:
@@ -151,6 +156,7 @@ def a_star(start, goal):
                             Q.append(v)
 
         if current == None:
+            text_output.append('Путь не существует.'  + "\n")
             print('Путь не существует.')
             return None
 
@@ -164,11 +170,30 @@ def a_star(start, goal):
             path.append(start)
             path.reverse()
 
-            print('Путь найден: {}'.format(path))
-            return path
+            text_output.append("Путь найден: " + str(path)  + "\n")
+            # print('Путь найден: {}'.format(path))
+            cost = 0
+            for i in range(len(path)-1):
+                for u, v, data in G.edges(data=True):
+                    if str(path[i]) == u and str(path[i+1]) == v:
+                        cost += d[u, v]
+
+            text_output.append("Стоимость пути: " + str(cost)  + "\n")
+            # print("Стоимость пути: " + str(cost))
+            print("".join(text_output))
+            return text_output
 
         Q.remove(current)
         U.append(current)
+
+        text_output.append("Итерация " + str(iteration) + "\n")
+        text_output.append("Множество вершин, которое требуется рассмотреть: " + str(Q)  + "\n")
+        text_output.append("Множество рассмотренных вершин: " + str(U) + "\n\n")
+        # print("Итерация " + str(iteration))
+        # print("Множество вершин, которое требуется рассмотреть: " + str(Q))
+        # print("Множество рассмотренных вершин: " + str(U) + "\n")
+
+    text_output.append('Путь не существует.\n')
     print('Путь не существует.')
 
 

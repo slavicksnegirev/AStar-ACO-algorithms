@@ -16,7 +16,6 @@ from a_star_algorithm import *
 from aco_algorithm import *
 from delete_vertex import *
 from delete_edge import *
-from delete_graph import *
 
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -156,16 +155,14 @@ class Ui_MainWindow(object):
 
     def protocol_update(self):
         self.text_edit.clear()
-        self.text_edit.append("Вывод протокола:\n" + str(path))
+        self.text_edit.append("Вывод протокола:\n" + str("".join(text_output)))
+        text_output.clear()
 
     def event_delete_graph_button(self):
         dialog = QMessageBox.question(MainWindow, 'Удаление графа', 'Вы точно хотите удалить граф?')
         print(dialog)
         if dialog == QMessageBox.Yes:
             G.clear()
-
-
-
 
 
 if __name__ == "__main__":

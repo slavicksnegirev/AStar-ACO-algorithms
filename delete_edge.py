@@ -70,6 +70,5 @@ def delete_edge_dialog():
     if delete_edge.exec() and ui.show_data()[0] != ui.show_data()[1]:
         G.remove_edge(ui.show_data()[0], ui.show_data()[1])
 
-
     else:
         print("Некорректный ввод.")

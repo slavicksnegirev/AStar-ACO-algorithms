@@ -100,23 +100,6 @@ def draw_graph():
 
     nx.draw(G, pos, with_labels=True, node_size=200, node_color="pink", font_size=10, width=1, edge_color=edge_colors)
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="maroon", font_size=6)
-    # for i in pos:
-    #     a = np.array(pos.get(i))
-    #     # a[0] -= 0.01
-    #     a[1] += 0.02
-    #     pos[i] = a
-    # print(pos)
-    # nx.draw_networkx_labels(G, pos, font_color="green", font_size=8)
-    # for i in pos:
-    #     pos[i] += 0.005
-    # for i in pos:
-    #     a = np.array(pos.get(i))
-    #     # a[0] += 0.04
-    #     a[1] -= 0.05
-    #     pos[i] = a
-    # nx.draw_networkx_labels(G, pos, labels=node_labels, font_color="blue", font_size=6)
-    # plt.legend(G.nodes(data=True), bbox_to_anchor =(0.75, 1.15), ncol = 2)
-    # plt.show()
 
 
 def a_star(start, goal):
@@ -168,7 +151,6 @@ def a_star(start, goal):
 
         if current == None:
             text_output.append('Путь не существует.' + "\n")
-            # print('Путь не существует.')
             return None
 
         if current == goal:
@@ -182,7 +164,7 @@ def a_star(start, goal):
             path.reverse()
 
             text_output.append("Путь найден: " + str(path)  + "\n")
-            # print('Путь найден: {}'.format(path))
+
             cost = 0
             for i in range(len(path)-1):
                 for u, v, data in G.edges(data=True):
@@ -190,7 +172,6 @@ def a_star(start, goal):
                         cost += d[u, v]
 
             text_output.append("Стоимость пути: " + str(cost)  + "\n")
-            # print("Стоимость пути: " + str(cost))
             return text_output
 
         Q.remove(current)
@@ -199,80 +180,105 @@ def a_star(start, goal):
         text_output.append("Итерация " + str(iteration) + "\n")
         text_output.append("Множество вершин, которое требуется рассмотреть: " + str(Q)  + "\n")
         text_output.append("Множество рассмотренных вершин: " + str(U) + "\n\n")
-        # print("Итерация " + str(iteration))
-        # print("Множество вершин, которое требуется рассмотреть: " + str(Q))
-        # print("Множество рассмотренных вершин: " + str(U) + "\n")
 
     text_output.append('Путь не существует.\n')
-    # print('Путь не существует.')
 
 
 def aco(start, goal, size):
-    text_output.append("Вывод протокола:\n")
-    d = np.array(nx.adjacency_matrix(G).todense())
-
-    start = int(start)
-    goal = int(goal)
-
-    n_iterations = 300
-    n_ants = int(size)
-    n_nodes = len(G.nodes)
-
     e = .5  # коэффициент испраения
     alpha = 1  # коэффициент феромона
-    beta = 2  # коэффициент видимости
+    beta = 4  # коэффициент видимости
+
+    n_iterations = 100 # количество итераций
+    n_ants = int(size) # размер колонии
+    n_nodes = len(G.nodes) # количество вершин
+
+    start_node = list(G.nodes).index(start)
+    goal_node = list(G.nodes).index(goal)
+
+    text_output.append("Вывод протокола:\n")
+    D = np.array(nx.adjacency_matrix(G).todense()) # матрица расстояний
 
     # подсчет видимости следующего узла: visibility(i,j)=1/d(i,j)
-    visibility = 1 / d
+    visibility = 1 / D
     visibility[visibility == inf] = 0
 
     # инициирующий феромон, присутствующий на дорогах, ведущих в узлы
-    pheromne = .1 * np.ones((n_ants, n_nodes))
+    pheromne = .5 * np.ones((n_nodes, n_nodes))
+
+    # инициализация лучшего пути
+    best_rute = inf * np.ones((1, n_nodes))
+
+    # стоимость минимального пути
+    best_dist_min_cost = None
 
     # инициализация маршрута муравьев с размером rute(n_ants,n_citys)
-    rute = 0 * np.ones((n_ants, n_nodes))
+    rute = -1 * np.ones((n_ants, n_nodes))
+
+    # начальное положение каждого муравья
+    rute[:, 0] = start_node
 
     for iteration in range(n_iterations):
-        rute[:, 0] = start  # начальное положение каждого муравья '1', то есть узла '1'
-
         for i in range(n_ants):
-
             temp_visibility = np.array(visibility)
 
             for j in range(n_nodes - 1):
-                # combine_feature = np.zeros(n_nodes)
-                # cum_prob = np.zeros(n_nodes)
-                cur_loc = int(rute[i, j] - 1)
+                cur_loc = int(rute[i, j])
                 temp_visibility[:, cur_loc] = 0  # видимость текущего узла равна нулю
-                p_feature = np.power(pheromne[cur_loc, :], beta)  # вычисление коэффициента феромона
-                v_feature = np.power(temp_visibility[cur_loc, :], alpha)  # вычисление коэффициента видимости
+                p_feature = np.power(pheromne[cur_loc, :], alpha)  # вычисление коэффициента феромона
+                v_feature = np.power(temp_visibility[cur_loc, :], beta)  # вычисление коэффициента видимости
                 p_feature = p_feature[:, np.newaxis]  # добавление оси для создания size[n_nodes,1]
                 v_feature = v_feature[:, np.newaxis]  # добавление оси для создания size[n_nodes,1]
                 combine_feature = np.multiply(p_feature, v_feature)  # вычисление функции объединения
                 total = np.sum(combine_feature)  # сумма всех характеристик
                 probs = combine_feature / total  # нахождение вероятности элемента probs(i) = comine_feature(i)/total
                 cum_prob = np.cumsum(probs)  # вычисление совокупной суммы
-                r = np.random.random_sample()  # рандомно число в диапазоне [0.0, 1.0)
-                node = np.nonzero(cum_prob > r)[0][0] + 1  # поиск следующего узла с вероятностью выше random(r)
+                r = np.random.random_sample()  # рандомное число в диапазоне [0.0, 1.0)
+                node = np.nonzero(cum_prob > r)[0][0]  # поиск следующего узла с вероятностью выше random(r)
                 rute[i, j + 1] = node  # добавление узла в путь
 
-                if node == n_nodes or node == goal:
+                if node == n_nodes-1 or node == list(G.nodes).index(goal):
                     break
-            # left = list(set([i for i in range(1, n_nodes + 1)]) - set(rute[i, :-2]))[0] # поиск последнего неизведанного города для маршрута
-            # rute[i, -2] = left  # adding untraversed city to route
+
         rute_opt = np.array(rute)  # инициализация оптимального пути
         dist_cost = np.zeros((n_ants, 1))  # инициализация стоимости пути
 
         for i in range(n_ants):
             s = 0
-            for j in range(n_nodes - 1):
-                s = s + d[int(rute_opt[i, j]) - 1, int(rute_opt[i, j + 1]) - 1]  # расчет общего расстояния
+            for j in range(n_nodes-1):
+                s = s + D[int(rute_opt[i, j]), int(rute_opt[i, j + 1])]  # расчет общего расстояния
 
             dist_cost[i] = s  # сохранение расстояния 'i'-го муравья в положении 'i'
 
         dist_min_loc = np.argmin(dist_cost)  # нахождение местоположения минимума dist_cost
         dist_min_cost = dist_cost[dist_min_loc]  # нахождение минимума dist_cost
-        best_route = rute[dist_min_loc, :]  # инициализация текущего пройденного маршрута как наилучшего маршрута
+
+        # инициализация текущего пройденного маршрута как наилучшего маршрута
+        if goal_node in rute[dist_min_loc, :]:
+            if inf in best_rute and goal_node:
+                best_rute = rute[dist_min_loc, :]
+                best_dist_min_cost = dist_min_cost
+            elif best_dist_min_cost > dist_min_cost:
+                best_rute = rute[dist_min_loc, :]
+                best_dist_min_cost = dist_min_cost
+
+        text_output.append("\nИтерация " + str(iteration) + "\n")
+        text_output.append("Ферменты на ребрах:\n")
+        for i in range(n_nodes):
+            text_output.append("[")
+            for j in range(n_nodes):
+                text_output.append(str(round(pheromne[i][j], 3)) + "  ")
+            text_output.append("]\n")
+
+        text_output.append("\nПройденные маршруты муравьями:\n")
+        # + str(rute_opt) + "\n"
+        for i in range(n_ants):
+            text_output.append("[")
+            for j in range(n_nodes):
+                if rute[i][j] != -1:
+                    text_output.append("'" + str(list(G.nodes)[int(rute[i][j])]) + "',  ")
+            text_output.append("]\n")
+
         pheromne = (1 - e) * pheromne  # испарение феромона с помощью (1-e)
 
         for i in range(n_ants):
@@ -281,20 +287,18 @@ def aco(start, goal, size):
                 # обновление феромона с помощью delta_distance
                 # delta_distance будет больше с min_dist, т.е.
                 # добавит больше веса этому маршруту на единицу площади
-                pheromne[int(rute_opt[i, j]) - 1, int(rute_opt[i, j + 1]) - 1] = pheromne[int(rute_opt[i, j]) - 1, int(
-                    rute_opt[i, j + 1]) - 1] + dt
+                pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] = pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] + dt
 
-    best_route = best_route[best_route != 0]
-    best_route = [str(int(item)) for item in best_route]
+    best_rute = best_rute[best_rute != -1]
 
-    print('Конечные маршруты всех муравьев:')
-    print(rute_opt)
-
-    if best_route[len(best_route)-1] == str(goal):
-        print('Кратчайший путь:', best_route)
-        print('Стоимость кратчайшего пути: ', int(dist_min_cost[0]) + d[int(best_route[-2]) - 1, 0])
+    if goal_node in best_rute:
         path.clear()
-        for i in range(len(best_route)):
-            path.append(best_route[i])
+
+        for i in range(len(best_rute)):
+            if best_rute[i] != -1:
+                path.append(str(list(G.nodes)[int(best_rute[i])]))
+
+        text_output.append("\nКратчайший путь: " + str(path))
+        text_output.append("\nСтоимость кратчайшего пути: " + str(int(best_dist_min_cost) + D[int(best_rute[-2]) - 1, 0]))
     else:
-        print('Путь не существует.')
+        text_output.append("\nПуть не найден.")

@@ -83,7 +83,10 @@ def connecting_vertices_dialog():
 
     if connecting_vertices.exec():
         if ui.show_data()[2].isdigit():
-            G.add_edge(ui.show_data()[0], ui.show_data()[1], weight=int(ui.show_data()[2]))
-            text_output.append("Вершина " + ui.show_data()[0] + " соединена с вершиной " + ui.show_data()[1] + ".\nВес дуги: " + str(ui.show_data()[2]) + ".")
+            if int(ui.show_data()[2]) > 0:
+                G.add_edge(ui.show_data()[0], ui.show_data()[1], weight=int(ui.show_data()[2]))
+                text_output.append("Вершина " + ui.show_data()[0] + " соединена с вершиной " + ui.show_data()[1] + ".\nВес дуги: " + str(ui.show_data()[2]) + ".")
+            else:
+                text_output.append("Некорректный ввод.\nВес дуги должен быть положительным.")
         else:
             text_output.append("Некорректный ввод.")

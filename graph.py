@@ -204,7 +204,9 @@ def aco(start, goal, size):
     visibility[visibility == inf] = 0
 
     # инициирующий феромон, присутствующий на дорогах, ведущих в узлы
-    pheromne = .5 * np.ones((n_nodes, n_nodes))
+    pheromne = visibility
+    pheromne[pheromne > 0] = 0.1
+
 
     # инициализация лучшего пути
     best_rute = inf * np.ones((1, n_nodes))
@@ -271,7 +273,6 @@ def aco(start, goal, size):
             text_output.append("]\n")
 
         text_output.append("\nПройденные маршруты муравьями:\n")
-        # + str(rute_opt) + "\n"
         for i in range(n_ants):
             text_output.append("[")
             for j in range(n_nodes):
@@ -283,7 +284,11 @@ def aco(start, goal, size):
 
         for i in range(n_ants):
             for j in range(n_nodes - 1):
-                dt = 1 / dist_cost[i]
+
+                if goal_node in rute[i]:
+                    dt = 1 / dist_cost[i]
+                else:
+                    dt = 0
                 # обновление феромона с помощью delta_distance
                 # delta_distance будет больше с min_dist, т.е.
                 # добавит больше веса этому маршруту на единицу площади

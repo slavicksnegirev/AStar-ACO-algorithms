@@ -275,7 +275,7 @@ def aco(start, goal, size):
         text_output.append("\nПройденные маршруты муравьями:\n")
         for i in range(n_ants):
             text_output.append("[")
-            for j in range(n_nodes):
+            for j in range(n_nodes-1):
                 if rute[i][j] != -1:
                     text_output.append("'" + str(list(G.nodes)[int(rute[i][j])]) + "',  ")
             text_output.append("]\n")
@@ -289,9 +289,7 @@ def aco(start, goal, size):
                     dt = 1 / dist_cost[i]
                 else:
                     dt = 0
-                # обновление феромона с помощью delta_distance
-                # delta_distance будет больше с min_dist, т.е.
-                # добавит больше веса этому маршруту на единицу площади
+                # обновление феромона с помощью delta_distance delta_distance будет больше с min_dist, т.е. добавит больше веса этому маршруту на единицу площади
                 pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] = pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] + dt
 
     best_rute = best_rute[best_rute != -1]

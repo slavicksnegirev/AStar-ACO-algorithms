@@ -214,13 +214,13 @@ def aco(start, goal, size):
     # стоимость минимального пути
     best_dist_min_cost = None
 
-    # инициализация маршрута муравьев с размером rute(n_ants,n_citys)
-    rute = -1 * np.ones((n_ants, n_nodes))
-
-    # начальное положение каждого муравья
-    rute[:, 0] = start_node
-
     for iteration in range(n_iterations):
+        # инициализация маршрута муравьев с размером rute(n_ants,n_citys)
+        rute = -1 * np.ones((n_ants, n_nodes))
+
+        # начальное положение каждого муравья
+        rute[:, 0] = start_node
+
         for i in range(n_ants):
             temp_visibility = np.array(visibility)
 
@@ -239,7 +239,7 @@ def aco(start, goal, size):
                 node = np.nonzero(cum_prob > r)[0][0]  # поиск следующего узла с вероятностью выше random(r)
                 rute[i, j + 1] = node  # добавление узла в путь
 
-                if node == n_nodes-1 or node == list(G.nodes).index(goal):
+                if node >= n_nodes-1 or node == list(G.nodes).index(goal):
                     break
 
         rute_opt = np.array(rute)  # инициализация оптимального пути
@@ -284,13 +284,13 @@ def aco(start, goal, size):
 
         for i in range(n_ants):
             for j in range(n_nodes - 1):
-
                 if goal_node in rute[i]:
                     dt = 1 / dist_cost[i]
                 else:
                     dt = 0
                 # обновление феромона с помощью delta_distance delta_distance будет больше с min_dist, т.е. добавит больше веса этому маршруту на единицу площади
-                pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] = pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] + dt
+                if int(rute_opt[i, j + 1]) > -1:
+                    pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] = pheromne[int(rute_opt[i, j]), int(rute_opt[i, j + 1])] + dt
 
     best_rute = best_rute[best_rute != -1]
 
